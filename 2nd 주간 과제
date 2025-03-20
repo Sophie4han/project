@@ -1,0 +1,27 @@
+import Foundation
+
+class BaseballGame {
+    func makeAnswer() -> [Int] {
+        var numbers: [Int] = [] // 정답 숫자를 담을 배열
+
+        while numbers.count < 3 { // 3개가 될 때까지 반복
+            let randomNum = Int.random(in: 1...9) // 1~9 중 랜덤 숫자
+            if !numbers.contains(randomNum) { // 중복 체크
+                numbers.append(randomNum) // 리스트에 추가
+            }
+        }
+        
+        return numbers
+    }
+}
+
+// 테스트 실행
+let game = BaseballGame()
+let answer = game.makeAnswer()
+print("정답(랜덤 숫자 3개):", answer) // 정답 출력 (테스트용)
+
+/*
+Int.random(in: 1...9) → 1부터 9까지 랜덤 숫자 뽑음
+if !numbers.contains(randomNum) → 중복된 숫자면 건너뛰고, 아니면 추가!
+while numbers.count < 3 → 숫자 3개가 될 때까지 반복 */
+
