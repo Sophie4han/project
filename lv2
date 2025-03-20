@@ -1,0 +1,64 @@
+import Foundation
+
+class BaseballGame {
+    // 정답 만들기 (랜덤한 3자리 숫자)
+    func makeAnswer() -> [Int] {
+        var answer: [Int] = []
+        //반복문while 사용해서 배열 크기가 3이 될 때까지 숫자 추가
+        while answer.count < 3 {
+            let randomNum = Int.random(in: 1...9)
+            if !answer.contains(randomNum) { //중복 방지
+                answer.append(randomNum)
+            }
+        }
+        
+        return answer
+    }
+
+    // 게임 시작
+    func start() {
+        let answer = makeAnswer() // 정답 만들기
+        print("⚾ ナンバーやきゅうはじめるよ! 1~9 사이의 서로 다른 숫자 3개를 맞춰라)")
+
+        while true {
+            print("숫자 3개를 입력하시오: ", terminator: "")
+            guard let input = readLine(), input.count == 3, let numbers = input.map({ Int(String($0)) }) as? [Int] else {
+                print("Try Again! 3つの数字を正確に入力してください.")
+                continue
+            }
+
+            if Set(numbers).count != 3 || numbers.contains(0) {
+                print("Select 3 numbers randomly between 1 and 9.")
+                continue
+            }
+
+            let (strike, ball) = checkResult(userInput: numbers, answer: answer)
+            print("Result: \(strike) ストライク!, \(ball) ボール")
+
+            if strike == 3 {
+                print("You did it😁!!")
+                break
+            }
+        }
+    }
+
+    // 숫자 비교 (ストライク 및 ボール 판정)
+    func checkResult(userInput: [Int], answer: [Int]) -> (Int, Int) {
+        var strike = 0
+        var ball = 0
+
+        for i in 0..<3 {
+            if userInput[i] == answer[i] {
+                strike += 1 // 같은 자리 -> 스트라이크
+            } else if answer.contains(userInput[i]) {
+                ball += 1 // 다른 자리? -> 볼
+            }
+        }
+
+        return (strike, ball)
+    }
+}
+
+// 게임 실행
+let game = BaseballGame()
+game.start()
